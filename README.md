@@ -135,6 +135,7 @@ When running with `SEED_DEMO_DATA=true` (enabled by default), the system pre-see
 
 ## 🔒 Security & Best Practices
 
+- **Two-Step Email Verification (2FA)**: Every login triggers a secure 6-digit OTP code with a 5-minute validity, brute-force rate limiting (max 5 attempts), replay protection, and a 30-second resend cooldown. In local development / demo mode, the code is logged in the backend console and conveniently displayed in the UI for effortless testing.
 - **Password Safety**: All user passwords are encrypted using **BCrypt** hashing.
 - **Stateless Auth**: REST endpoints are secured using signed **JWT Bearer Tokens**.
 - **Role Enforcement**: Critical Admin and Security APIs strictly enforce authority checks on the server side.

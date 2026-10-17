@@ -352,6 +352,90 @@ table.table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .auth-form { width: 100%; max-width: 420px; }
 .auth-form h2 { font-size: 26px; margin-bottom: 6px; }
 .demo-box { background: var(--info-soft); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: #1f5f9c; }
+.demo-account-btn { background: none; border: 1px solid #bdd5ea; color: #1a5695; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; margin-left: 6px; }
+.demo-account-btn:hover { background: #dceaf7; border-color: #8fb8dc; }
+
+.verification-code-input {
+  letter-spacing: 12px;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  padding: 14px 16px;
+  border: 2px solid #cbd5e1;
+  transition: all 0.2s ease;
+}
+.verification-code-input:focus {
+  border-color: var(--navy-blue);
+  box-shadow: 0 0 0 3px rgba(26, 86, 149, 0.15);
+}
+
+.otp-demo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f0f7ff;
+  border: 1px dashed #7cb0e8;
+  color: #1a5695;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.otp-demo-badge code {
+  font-family: monospace;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: #dbeafe;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: #1e40af;
+}
+.otp-fill-btn {
+  background: #1a5695;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+.otp-fill-btn:hover {
+  background: #0f3d6c;
+}
+
+.otp-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+.btn-link-action {
+  background: none;
+  border: none;
+  color: var(--navy-blue);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.btn-link-action:hover:not(:disabled) {
+  color: var(--red);
+}
+.btn-link-action:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  text-decoration: none;
+}
 
 /* ------------------------------------------------------------------ responsive */
 @media (max-width: 1100px) {

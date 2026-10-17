@@ -18,11 +18,19 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const { token, user: loggedIn } = await authService.login(email, password);
+  const initiateLogin = useCallback(async (email, password) => {
+    return await authService.login(email, password);
+  }, []);
+
+  const verifyLogin = useCallback(async (email, code) => {
+    const { token, user: loggedIn } = await authService.verifyLogin(email, code);
     localStorage.setItem(TOKEN_KEY, token);
     setUser(loggedIn);
     return loggedIn;
+  }, []);
+
+  const resendCode = useCallback(async (email) => {
+    return await authService.resendCode(email);
   }, []);
 
   const logout = useCallback(async () => {
@@ -36,12 +44,15 @@ export function AuthProvider({ children }) {
       user,
       setUser,
       loading,
-      login,
+      login: initiateLogin,
+      initiateLogin,
+      verifyLogin,
+      resendCode,
       logout,
       token: localStorage.getItem(TOKEN_KEY),
       isAdmin: user?.role === 'ADMIN' || user?.role === 'SECURITY',
     }),
-    [user, loading, login, logout],
+    [user, loading, initiateLogin, verifyLogin, resendCode, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

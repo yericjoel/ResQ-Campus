@@ -28,6 +28,15 @@ public final class Dtos {
     public record LoginRequest(@NotBlank(message = "Email is required") String email,
                                @NotBlank(message = "Password is required") String password) {}
 
+    public record LoginResponse(boolean requiresVerification, String email, String message, String devCode) {}
+
+    public record VerifyLoginRequest(@NotBlank(message = "Email is required") String email,
+                                     @NotBlank(message = "Verification code is required") String code) {}
+
+    public record ResendCodeRequest(@NotBlank(message = "Email is required") String email) {}
+
+    public record ResendCodeResponse(boolean success, String message, String devCode) {}
+
     public record ProfileUpdateRequest(
             @NotBlank(message = "Name is required") @Size(max = 100) String name,
             @Size(max = 40) String studentId,

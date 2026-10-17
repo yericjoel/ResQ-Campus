@@ -30,6 +30,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final JwtService jwt;
     private final FileStorageService files;
+    private final EmailVerificationService emailVerification;
 
     private record Attempts(int count, Instant lockedUntil) {}
 
@@ -55,7 +56,7 @@ public class AuthService {
         return Mapper.user(users.save(u));
     }
 
-    public AuthResponse login(LoginRequest req) {
+    public LoginResponse login(LoginRequest req) {
         String email = req.email().trim().toLowerCase();
         Attempts a = failures.get(email);
         if (a != null && a.lockedUntil() != null && a.lockedUntil().isAfter(Instant.now())) {
@@ -69,7 +70,29 @@ public class AuthService {
         }
         if (!user.isActive()) throw new ApiException(HttpStatus.FORBIDDEN, "This account has been disabled");
         failures.remove(email);
+
+        String devCode = emailVerification.generateAndSendCode(user.getEmail(), user.getName());
+        return new LoginResponse(true, user.getEmail(), "A 6-digit verification code has been sent to your email.", devCode);
+    }
+
+    public AuthResponse verifyLogin(VerifyLoginRequest req) {
+        String email = req.email().trim().toLowerCase();
+        User user = users.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "User account not found"));
+        if (!user.isActive()) throw new ApiException(HttpStatus.FORBIDDEN, "This account has been disabled");
+
+        emailVerification.verifyCode(email, req.code());
         return new AuthResponse(jwt.generate(user), Mapper.user(user));
+    }
+
+    public ResendCodeResponse resendCode(ResendCodeRequest req) {
+        String email = req.email().trim().toLowerCase();
+        User user = users.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "No account found for this email address"));
+        if (!user.isActive()) throw new ApiException(HttpStatus.FORBIDDEN, "This account has been disabled");
+
+        String devCode = emailVerification.resendCode(user.getEmail(), user.getName());
+        return new ResendCodeResponse(true, "A new verification code has been sent to your email.", devCode);
     }
 
     public void logout(String token) {

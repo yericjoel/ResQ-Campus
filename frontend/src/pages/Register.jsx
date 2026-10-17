@@ -20,8 +20,7 @@ export default function Register() {
     setError('');
     try {
       await authService.register({ ...f, year: f.year ? Number(f.year) : null });
-      await login(f.email.trim(), f.password);
-      navigate('/', { replace: true });
+      navigate('/login?registered=1&email=' + encodeURIComponent(f.email.trim()), { replace: true });
     } catch (err) {
       setError(getErrorMessage(err, 'Registration failed.'));
     } finally {

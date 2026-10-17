@@ -23,8 +23,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return auth.login(request);
+    }
+
+    @PostMapping("/verify-login")
+    public AuthResponse verifyLogin(@Valid @RequestBody VerifyLoginRequest request) {
+        return auth.verifyLogin(request);
+    }
+
+    @PostMapping("/resend-code")
+    public ResendCodeResponse resendCode(@Valid @RequestBody ResendCodeRequest request) {
+        return auth.resendCode(request);
     }
 
     @PostMapping("/logout")
